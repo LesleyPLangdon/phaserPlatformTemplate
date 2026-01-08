@@ -6,7 +6,7 @@ var config = {
     physics: {
         default: 'arcade',  // We'll be using Phaser's Arcade physics plugin
         arcade: {
-            gravity: { y: 300 },  // This is the gravity value to be used in the game
+            gravity: { y: 200 },  // This is the gravity value to be used in the game
             debug: true  // This lets you visualize the physics bodies if set to true
         }
     },
@@ -28,6 +28,12 @@ function preload() {
     this.load.image('planet1', 'assets/planet01.png');
     this.load.image('planet9', 'assets/planet09.png');
     this.load.image('planet4', 'assets/1295674594.png');
+    this.load.image('planet2', 'assets/planet02.png');
+    this.load.image('planet3', 'assets/planet03.png');
+    this.load.image('planet5', 'assets/planet05.png');
+    this.load.image('planet6', 'assets/planet06.png');
+    this.load.image('planet7', 'assets/planet07.png');
+    this.load.image('planet8', 'assets/planet08.png');
     this.load.spritesheet('myGif', '2851306443.png', {
         frameWidth: 400, // Replace with your frame's width
         frameHeight: 400 // Replace with your frame's height
@@ -56,31 +62,13 @@ function create() {
     
     // Add ground platforms
     platforms.create(75, 600, 'planet1').setDisplaySize(150, 150).refreshBody().body.setCircle(60).setOffset(15, 20);
-    // platforms.create(175, 600, 'ground');
-    platforms.create(350, 500, 'planet9').setDisplaySize(200, 200).refreshBody().body.setCircle(80).setOffset(20, 25);
-    // platforms.create(425, 800, 'ground');
-    platforms.create(600, 400, 'planet4').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
-    // platforms.create(675, 800, 'ground');
-    // platforms.create(625, 400, 'box');
-    // platforms.create(800, 800, 'ground');
-    // platforms.create(925, 800, 'ground');
-    // platforms.create(1050, 600, 'ground');
-    // platforms.create(1175, 600, 'ground');
-    // platforms.create(1300, 600, 'ground');
-    // platforms.create(1425, 600, 'ground');
-    // platforms.create(1550, 600, 'ground');
-    // platforms.create(1675, 600, 'ground');
-    // platforms.create(1800, 600, 'ground');
-    // platforms.create(1925, 600, 'ground');
-    // platforms.create(2050, 600, 'ground');
-    // platforms.create(2175, 600, 'ground');
-    // platforms.create(2300, 600, 'ground');
-    // platforms.create(2425, 600, 'ground');
-    // platforms.create(2550, 600, 'ground');
-    // platforms.create(2675, 600, 'ground');
-    // platforms.create(2800, 600, 'ground');
-    // platforms.create(2925, 600, 'ground');
-    // platforms.create(3050, 600, 'ground');
+    platforms.create(350, 700, 'planet9').setDisplaySize(200, 200).refreshBody().body.setCircle(80).setOffset(20, 25);
+    platforms.create(600, 650, 'planet4').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
+
+    platforms.create(800, 800, 'planet5').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
+    platforms.create(1150, 900, 'planet6').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
+    platforms.create(1300, 850, 'planet7').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
+   
     // platforms.create(3175, 600, 'ground');
     // platforms.create(3300, 600, 'ground');
     // platforms.create(3425, 600, 'ground');
@@ -116,7 +104,7 @@ function create() {
         repeat: -1
     });
 
-    let gifSprite = this.add.sprite(900, 500, 'myGif');
+    let gifSprite = this.add.sprite(1900, 500, 'myGif');
     gifSprite.play('gifAnimation');
     // gifSprite.setScale(2); // Optional: Scale up
     gifSprite.setOrigin(0.5, 0.5); // Optional: Center origin
