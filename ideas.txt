@@ -1,0 +1,11 @@
+Mrs. Snyder's 6th grade science class - BCS - 1/6/26
+Buy skins and/or other creatures
+Jump on/in UFO to skip level - if it hits you, you die
+Jump on/in astroid to skip level - if it hits you, you die. Or just dodge astroids
+Collect stars instead of coins
+planets have features of planets in our solar system
+level ends at next planet in our solar system
+which end of solar system should we start at? (if we start at last planet, we can go to sun and then back out through planets with harder levels.
+some planets can lead to another world where player is on planet - shows terrain of planet
+land on rock planets, fall through gas planets. Maybe jump on space junk?
+Gallexies could be entry point to next level or to mini game
