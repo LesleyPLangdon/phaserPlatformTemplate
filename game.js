@@ -6,7 +6,7 @@ var config = {
     physics: {
         default: 'arcade',  // We'll be using Phaser's Arcade physics plugin
         arcade: {
-            gravity: { y: 200 },  // This is the gravity value to be used in the game
+            gravity: { y: 300 },  // This is the gravity value to be used in the game
             debug: true  // This lets you visualize the physics bodies if set to true
         }
     },
@@ -59,23 +59,31 @@ function create() {
     background.setScale(2, 2);
 
     platforms = this.physics.add.staticGroup();  // Create a group for platforms
-    
+    var planetY = 600;
+    var planetDiameter = 75;
+    var planetX = 75;
     // Add ground platforms
-    platforms.create(75, 600, 'planet1').setDisplaySize(150, 150).refreshBody().body.setCircle(60).setOffset(15, 20);
-    platforms.create(350, 700, 'planet9').setDisplaySize(200, 200).refreshBody().body.setCircle(80).setOffset(20, 25);
-    platforms.create(600, 650, 'planet4').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
-
-    platforms.create(800, 800, 'planet5').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
-    platforms.create(1150, 900, 'planet6').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
+    platforms.create(planetX, planetY, 'planet1').setDisplaySize(planetDiameter * 2, planetDiameter * 2).refreshBody().body.setCircle(planetDiameter).setOffset(15, 20);
+    
+    planetX += (planetDiameter * 2) + (Math.random() * 200);
+    planetY = 550 + Math.random() * 300;
+    planetDiameter = 75 + Math.random() * 150;
+    platforms.create(planetX, planetY, 'planet9').setDisplaySize(planetDiameter, planetDiameter).refreshBody().body.setCircle(planetDiameter * .5).setOffset(20, 25);
+    
+    planetX += (planetDiameter * 2) + (Math.random() * 200);
+    planetY = 550 + Math.random() * 300;
+    planetDiameter = 75 + Math.random() * 150;
+    platforms.create(planetX, planetY, 'planet4').setDisplaySize(planetDiameter, planetDiameter).refreshBody().body.setCircle(planetDiameter * .5).setOffset(0, 5);
+    
+    planetX += (planetDiameter * 2) + (Math.random() * 200);
+    planetY = 550 + Math.random() * 300;
+    planetDiameter = 75 + Math.random() * 150;
+    platforms.create(planetX, planetY, 'planet5').setDisplaySize(planetDiameter, planetDiameter).refreshBody().body.setCircle(planetDiameter * .5).setOffset(20, 25);
+    
+    platforms.create(1150, 750, 'planet6').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
     platforms.create(1300, 850, 'planet7').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
    
-    // platforms.create(3175, 600, 'ground');
-    // platforms.create(3300, 600, 'ground');
-    // platforms.create(3425, 600, 'ground');
-    // platforms.create(3550, 600, 'ground');
-    // platforms.create(3675, 600, 'ground');
-    // platforms.create(3800, 600, 'ground');
-    // platforms.create(3925, 600, 'ground');
+   
 
     player = this.physics.add.sprite(50, 50, 'player');  // Create player sprite
     player.setSize(120, 150).setOffset(0, 100);
@@ -124,7 +132,7 @@ function update() {
     } else if (cursors.right.isDown) {
         player.setVelocityX(160);
     } else if (cursors.up.isDown && player.body.touching.down) {
-        player.setVelocityY(-600);
+        player.setVelocityY(-300);
     }
 }
 
