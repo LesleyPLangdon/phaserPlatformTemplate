@@ -34,7 +34,7 @@ function preload() {
     this.load.image('planet6', 'assets/planet06.png');
     this.load.image('planet7', 'assets/planet07.png');
     this.load.image('planet8', 'assets/planet08.png');
-    this.load.spritesheet('myGif', '2851306443.png', {
+    this.load.spritesheet('blackHole', '2851306443.png', {
         frameWidth: 400, // Replace with your frame's width
         frameHeight: 400 // Replace with your frame's height
     });
@@ -70,7 +70,7 @@ function create() {
     planetDiameter = 75 + Math.random() * 150;
     platforms.create(planetX, planetY, 'planet9').setDisplaySize(planetDiameter, planetDiameter).refreshBody().body.setCircle(planetDiameter * .5).setOffset(20, 25);
     
-    planetX += (planetDiameter * 2) + (Math.random() * 200);
+    planetX += (planetDiameter) + (Math.random() * 200);
     planetY = 550 + Math.random() * 300;
     planetDiameter = 75 + Math.random() * 150;
     platforms.create(planetX, planetY, 'planet4').setDisplaySize(planetDiameter, planetDiameter).refreshBody().body.setCircle(planetDiameter * .5).setOffset(0, 5);
@@ -107,12 +107,12 @@ function create() {
 
     this.anims.create({
         key: 'gifAnimation',
-        frames: this.anims.generateFrameNumbers('myGif', { start: 0, end: 9 }), // Adjust as needed
+        frames: this.anims.generateFrameNumbers('blackHole', { start: 0, end: 9 }), // Adjust as needed
         frameRate: 10,
         repeat: -1
     });
 
-    let gifSprite = this.add.sprite(1900, 500, 'myGif');
+    let gifSprite = this.add.sprite(1900, 500, 'blackHole');
     gifSprite.play('gifAnimation');
     // gifSprite.setScale(2); // Optional: Scale up
     gifSprite.setOrigin(0.5, 0.5); // Optional: Center origin
