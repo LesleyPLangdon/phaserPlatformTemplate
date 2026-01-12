@@ -1,7 +1,7 @@
 import Boot from './scenes/Boot.js';
 
 import LevelDwarfs from './scenes/Level_Dwarfs.js';
-// import LevelNeptune from './scenes/Level_Neptune.js';
+import LevelNeptune from './scenes/Level_Neptune.js';
 // import LevelUranus from './scenes/Level_Uranus.js';
 // import LevelSaturn from './scenes/Level_Saturn.js';
 // import LevelJupiter from './scenes/Level_Jupiter.js';
@@ -12,7 +12,7 @@ import LevelDwarfs from './scenes/Level_Dwarfs.js';
 // import LevelMercury from './scenes/Level_Mercury.js';
 // import LevelSun from './scenes/Level_Sun.js';
 
-// import SurfaceNeptune from './scenes/surface/Surface_Neptune.js';
+import SurfaceNeptune from './scenes/surface/Surface_Neptune.js';
 // import SurfaceUranus from './scenes/surface/Surface_Uranus.js';
 // import SurfaceSaturn from './scenes/surface/Surface_Saturn.js';
 // import SurfaceJupiter from './scenes/surface/Surface_Jupiter.js';
@@ -33,9 +33,9 @@ const config = {
   scene: [
     Boot,
 
-    LevelDwarfs //,
-    // LevelNeptune,
-    // SurfaceNeptune,
+    LevelDwarfs,
+    LevelNeptune,
+    SurfaceNeptune //,
     // LevelUranus,
     // SurfaceUranus,
     // LevelSaturn,

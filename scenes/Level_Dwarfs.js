@@ -15,7 +15,7 @@ export default {
     bg.setScale(2, 2);
 
     this.platforms = createPlatformGroup(this);
-    const { endX } = createRandomPlanetChain(this.platforms, { count: 6 });
+    const { endX } = createRandomPlanetChain(this.platforms, { count: 4 });
 
     this.player = createPlayer(this, 100, 50);
     this.physics.add.collider(this.player, this.platforms);
