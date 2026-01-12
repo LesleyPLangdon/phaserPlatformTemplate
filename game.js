@@ -1,13 +1,13 @@
-// -------------------- Phaser Game Config --------------------
+
 var config = {
-    type: Phaser.AUTO,
+    type: Phaser.AUTO,  // Will automatically use WebGL if available, else falls back to Canvas
     width: window.innerWidth,
     height: window.innerHeight,
     physics: {
-        default: 'arcade',
+        default: 'arcade',  // We'll be using Phaser's Arcade physics plugin
         arcade: {
-            gravity: { y: 300 },
-            debug: true
+            gravity: { y: 300 },  // This is the gravity value to be used in the game
+            debug: true  // This lets you visualize the physics bodies if set to true
         }
     },
     scene: {
@@ -19,176 +19,149 @@ var config = {
 
 var game = new Phaser.Game(config);
 
-// -------------------- Helpers --------------------
-function randBetween(min, max) {
-    return min + Math.random() * (max - min);
-}
-
-/**
- * Creates a run of static, circular "planet" platforms with randomized size + Y,
- * while advancing X so planets don't pile up.
- *
- * @param {Phaser.Scene} scene
- * @param {Phaser.Physics.Arcade.StaticGroup} platforms
- * @param {string[]} planetKeys  - list of texture keys (e.g., ["planet1","planet2"...])
- * @param {object} options
- * @returns {Phaser.GameObjects.GameObject[]} created planet objects
- */
-function placeRandomPlanets(scene, platforms, planetKeys, options = {}) {
-    const worldW = options.worldWidth ?? 4000;
-
-    const startX = options.startX ?? 150;
-
-    const yMin = options.yMin ?? 550;
-    const yMax = options.yMax ?? 900;
-
-    const minDiameter = options.minDiameter ?? 75;
-    const maxDiameter = options.maxDiameter ?? 200;
-
-    const gapMin = options.gapMin ?? 100;
-    const gapMax = options.gapMax ?? 260;
-
-    // reduces circle radius a bit so collision is more forgiving
-    const bodyPadding = options.bodyPadding ?? 8;
-
-    let x = startX;
-    const created = [];
-
-    for (const key of planetKeys) {
-        const diameter = randBetween(minDiameter, maxDiameter);
-        const y = randBetween(yMin, yMax);
-
-        // Stop if we reach the end of the world (optional)
-        if (x > worldW - diameter) break;
-
-        const planet = platforms
-            .create(x, y, key)
-            .setDisplaySize(diameter, diameter);
-
-        // Must refresh after display size changes
-        planet.refreshBody();
-
-        // Make static body circular and centered
-        const radius = (diameter / 2) - bodyPadding;
-        if (planet.body && radius > 5) {
-            planet.body.setCircle(radius);
-
-            // Center the circle inside the display-sized sprite
-            const offset = (diameter / 2) - radius;
-            planet.body.setOffset(offset, offset);
-        }
-
-        created.push(planet);
-
-        // Advance X for the next planet
-        x += diameter + randBetween(gapMin, gapMax);
-    }
-
-    return created;
-}
-
-// -------------------- Globals --------------------
-let background;
-let player;
-let platforms;
-
-// -------------------- Preload --------------------
 function preload() {
+    // This is where we'll load our game assets
     this.load.image('background', 'spaceBackground2.png');
     this.load.image('ground', 'assets/grass.png');
     this.load.image('player', 'assets/alienGreen_walk1.png');
     this.load.image('box', 'assets/boxCoin_disabled.png');
-
-    // Planets (as images)
     this.load.image('planet1', 'assets/planet01.png');
+    this.load.image('planet9', 'assets/planet09.png');
+    this.load.image('planet4', 'assets/1295674594.png');
     this.load.image('planet2', 'assets/planet02.png');
     this.load.image('planet3', 'assets/planet03.png');
-    this.load.image('planet4', 'assets/1295674594.png');
     this.load.image('planet5', 'assets/planet05.png');
     this.load.image('planet6', 'assets/planet06.png');
     this.load.image('planet7', 'assets/planet07.png');
     this.load.image('planet8', 'assets/planet08.png');
-    this.load.image('planet9', 'assets/planet09.png');
-
-    // Black hole spritesheet (animation)
     this.load.spritesheet('blackHole', '2851306443.png', {
-        frameWidth: 400,
-        frameHeight: 400
+        frameWidth: 400, // Replace with your frame's width
+        frameHeight: 400 // Replace with your frame's height
     });
 }
 
-// -------------------- Create --------------------
-function create() {
-    // World bounds
-    this.physics.world.setBounds(0, 0, 4000, 2000);
+let background;
+let player;
+let platforms;
+let planet1;
+let planet2;
+let planet3;
+let planet4;
+let planet5;
+let planet6;
+let planet7;
+let planet8;
+let planet9;
 
-    // Background
+// planet1.setDisplaySize(100, 100);
+// planet1.refreshBody();
+let planetY = 600;
+let planetDiameter = 75;
+let planetX = 75;
+const level1Planets = [planet2, planet3, planet4, planet5, planet6, planet7, planet8, planet9];
+// Create planets function: array is passed and each planet is given a random size and position.
+function makePlanet(planets) { 
+    for (let i = 1; i < planets.length; i++) {
+        planetDiameter = 75 + Math.random() * 130;
+        planetX += (planetDiameter * 2) + (Math.random() * 130);
+        planetY = 500 + Math.random() * 200;
+        
+        planets[i] = platforms.create(planetX, planetY, 'planet' + (i + 1)).setDisplaySize(planetDiameter, planetDiameter).refreshBody().body.setCircle(planetDiameter * .35).setOffset(planetDiameter * .15, planetDiameter * .15);
+    }
+}
+// Function to create a looping animation: for spritesheets
+function createLoopingAnimation(scene, animKey, spriteKey, startFrame = 0, endFrame = 9, frameRate = 10) {
+    scene.anims.create({
+        key: animKey,
+        frames: scene.anims.generateFrameNumbers(spriteKey, {
+            start: startFrame,
+            end: endFrame
+        }),
+        frameRate: frameRate,
+        repeat: -1
+    });
+}
+
+
+function create() {
+   // Set world bounds
+    this.physics.world.setBounds(0, 0, 4000, 2000);  // The second parameter is the world height
     background = this.add.image(0, 0, 'background');
     background.setScale(2, 2);
 
-    // Platforms group (static)
-    platforms = this.physics.add.staticGroup();
+    platforms = this.physics.add.staticGroup();  // Create a group for platforms
+    
+    // Add ground platforms
+    platforms.create(100, 550, 'planet1').setDisplaySize(150, 150).refreshBody().body.setCircle(50).setOffset((25), (25));
+    
+    makePlanet(level1Planets);
+    // planetX += (planetDiameter * 2) + (Math.random() * 200);
+    // planetY = 550 + Math.random() * 300;
+    // planetDiameter = 75 + Math.random() * 150;
+    // platforms.create(planetX, planetY, 'planet9').setDisplaySize(planetDiameter, planetDiameter).refreshBody().body.setCircle(planetDiameter * .5).setOffset(20, 25);
+    
+    // planetX += (planetDiameter) + (Math.random() * 200);
+    // planetY = 550 + Math.random() * 300;
+    // planetDiameter = 75 + Math.random() * 150;
+    // platforms.create(planetX, planetY, 'planet4').setDisplaySize(planetDiameter, planetDiameter).refreshBody().body.setCircle(planetDiameter * .5).setOffset(0, 5);
+    
+    // planetX += (planetDiameter * 2) + (Math.random() * 200);
+    // planetY = 550 + Math.random() * 300;
+    // planetDiameter = 75 + Math.random() * 150;
+    // platforms.create(planetX, planetY, 'planet5').setDisplaySize(planetDiameter, planetDiameter).refreshBody().body.setCircle(planetDiameter * .5).setOffset(20, 25);
+    
+    // platforms.create(1150, 750, 'planet6').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
+    // platforms.create(1300, 850, 'planet7').setDisplaySize(100, 100).refreshBody().body.setCircle(50).setOffset(0, 5);
+   
+   
 
-    // --- Random planet platforms ---
-    // If you want one of each:
-    const planetKeys = [
-        "planet1", "planet2", "planet3", "planet4", "planet5",
-        "planet6", "planet7", "planet8", "planet9"
-    ];
-
-    placeRandomPlanets(this, platforms, planetKeys, {
-        startX: 150,
-        yMin: 550,
-        yMax: 900,
-        minDiameter: 75,
-        maxDiameter: 200,
-        gapMin: 100,
-        gapMax: 260,
-        bodyPadding: 8,
-        worldWidth: 4000
-    });
-
-    // Player
-    player = this.physics.add.sprite(50, 50, 'player');
+    player = this.physics.add.sprite(100, 50, 'player');  // Create player sprite
     player.setSize(120, 150).setOffset(0, 100);
-    player.setBounce(0.2);
-    player.setCollideWorldBounds(true);
+    player.setBounce(0.2);  // Set player bounce
+    player.setCollideWorldBounds(true);  // Keep player within game world bounds
 
-    // Collisions
+    // Set up collisions between player and platforms
     this.physics.add.collider(player, platforms);
 
-    // Camera follow
-    this.cameras.main.startFollow(player, true, 0.05, 0.05);
-    this.cameras.main.setBounds(0, 0, 4000, 2000);
+    // planet1 = this.physics.add.sprite(300, 0, 'planet1');  // Create player sprite
+    // planet1.setDisplaySize(100, 100);
+    // planet1.refreshBody();
+    // planet1.setCollideWorldBounds(true);  // Keep player within game world bounds
 
-    // -------------------- Black Hole (left at end for now) --------------------
+    // Set up collisions between player and platforms
+    // this.physics.add.collider(player, platforms);
+
+     // Make camera follow player and stay within world bounds
+    this.cameras.main.startFollow(player, true, 0.05, 0.05);
+    this.cameras.main.setBounds(0, 0, 4000, 2000);  // The second parameter is the world height
+
     this.anims.create({
         key: 'gifAnimation',
-        frames: this.anims.generateFrameNumbers('blackHole', { start: 0, end: 9 }),
+        frames: this.anims.generateFrameNumbers('blackHole', { start: 0, end: 9 }), // Adjust as needed
         frameRate: 10,
         repeat: -1
     });
 
-    let gifSprite = this.add.sprite(1900, 500, 'blackHole');
+    let gifSprite = this.add.sprite(planetX + 250, 500, 'blackHole');
     gifSprite.play('gifAnimation');
-    gifSprite.setOrigin(0.5, 0.5);
+    // gifSprite.setScale(2); // Optional: Scale up
+    gifSprite.setOrigin(0.5, 0.5); // Optional: Center origin
 }
 
-// -------------------- Update --------------------
+
 function update() {
+    // Create cursor keys for player movement
     let cursors = this.input.keyboard.createCursorKeys();
 
-    // Reset horizontal velocity each frame
+    // Reset player velocity
     player.setVelocityX(0);
 
-    // Left/right movement
+    // Move player left, right, or jump
     if (cursors.left.isDown) {
-        player.setVelocityX(-160);
+        player.setVelocityX(-180);
     } else if (cursors.right.isDown) {
-        player.setVelocityX(160);
+        player.setVelocityX(180);
     }
-
-    // Jump (separate so you can jump while moving)
     if (cursors.up.isDown && player.body.touching.down) {
         player.setVelocityY(-300);
     }

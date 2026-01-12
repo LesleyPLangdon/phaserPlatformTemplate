@@ -9,3 +9,8 @@ which end of solar system should we start at? (if we start at last planet, we ca
 some planets can lead to another world where player is on planet - shows terrain of planet
 land on rock planets, fall through gas planets. Maybe jump on space junk?
 Gallexies could be entry point to next level or to mini game
+
+Logan and mom ideas
+alien turns red or blue on hot or cold planet. If alien gets full red or blue, loose life
+
+
